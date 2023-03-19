@@ -1,6 +1,6 @@
 package mk.ukim.finki.emtlab.model;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Entity
 public class Author {

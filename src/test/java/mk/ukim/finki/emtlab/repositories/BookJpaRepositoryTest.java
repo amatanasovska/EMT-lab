@@ -19,7 +19,7 @@ public class BookJpaRepositoryTest {
     public void testFindAll(){
         bookRepository.save(new Book("book1", Category.DRAMA,null,10));
 
-        Assert.assertEquals(2, bookRepository.findAll().size());
+        Assert.assertEquals(1, bookRepository.findAll().size());
     }
 
 }
