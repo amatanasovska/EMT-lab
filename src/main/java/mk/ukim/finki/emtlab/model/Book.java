@@ -1,33 +1,71 @@
 package mk.ukim.finki.emtlab.model;
 
-import javax.persistence.*;
+import lombok.Data;
+import mk.ukim.finki.emtlab.model.idclass.BookId;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import mk.ukim.finki.emtlab.model.enumerations.Category;
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-public class Book {
+@Data
+@IdClass(BookId.class)
+public class Book implements Serializable {
+    private static Log log = LogFactory.getLog(Book.class);
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    Long bookId;
 
-    String name;
-
-    Category category;
 
     @ManyToOne
-    Author author;
+    @PrimaryKeyJoinColumn(name="booktype_id", referencedColumnName="id")
+    @Id
+    BookType bookType;
 
-    Integer availableCopies;
-
-    public Book(String name, Category category, Author author, Integer availableCopies) {
-
-        this.name = name;
-        this.category = category;
-        this.author = author;
-        this.availableCopies = availableCopies;
+    boolean isTaken;
+    public Book() {
+        this.isTaken = false;
     }
 
-    public Book() {
+    public Book(Long bookId, BookType bookType) {
+        this.bookId = bookId;
+        this.bookType = bookType;
+        this.isTaken = false;
+    }
 
+    public Book(BookType bookType) {
+        this.bookType = bookType;
+        this.isTaken = false;
+    }
+    @PrePersist
+    public void logNewUserAttempt() {
+        log.info("Attempting to add new book with type: " + bookType.getName());
+    }
+
+    @PostPersist
+    public void logNewUserAdded() {
+        log.info("Adding new book with type: " + bookType.getName());
+    }
+
+    @PreRemove
+    public void logUserRemovalAttempt() {
+        log.info("Attempting to delete book with type: " + bookType.getName());
+    }
+
+    @PostRemove
+    public void logUserRemoval() {
+        log.info("Deleted book: " + bookType.getName());
+    }
+
+    @PreUpdate
+    public void logUserUpdateAttempt() {
+        log.info("Attempting to update book with type: " + bookType.getName());
+    }
+
+    @PostUpdate
+    public void logUserUpdate() {
+        log.info("Updated book: " + bookType.getName());
     }
 }
