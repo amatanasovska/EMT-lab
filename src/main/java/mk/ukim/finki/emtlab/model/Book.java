@@ -42,33 +42,5 @@ public class Book implements Serializable {
         this.bookType = bookType;
         this.isTaken = false;
     }
-//    @PrePersist
-//    public void logNewBookAttempt() {
-//        System.out.println("Attempt to add book.");
-//    }
 
-//    @PostPersist
-//    public void logNewUserAdded() {
-//        log.info("Adding new book with type: " + bookType.getName());
-//    }
-//
-//    @PreRemove
-//    public void logUserRemovalAttempt() {
-//        log.info("Attempting to delete book with type: " + bookType.getName());
-//    }
-//
-//    @PostRemove
-//    public void logUserRemoval() {
-//        log.info("Deleted book: " + bookType.getName());
-//    }
-//
-//    @PreUpdate
-//    public void logUserUpdateAttempt() {
-//        log.info("Attempting to update book with type: " + bookType.getName());
-//    }
-//
-//    @PostUpdate
-//    public void logUserUpdate() {
-//        log.info("Updated book: " + bookType.getName());
-//    }
 }

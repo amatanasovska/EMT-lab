@@ -44,12 +44,11 @@ public class BookServiceImpl implements BookService {
             if(name==null) throw new NonNullableFieldException("name");
 
             BookType bookType = bookTypeRepository.findByName(name).orElseThrow(()->new CategoryNotFoundException(name));
-            Book book = new Book(bookType,isTaken);
+            Book book = bookRepository.save(new Book(bookType,isTaken));
 
-            return Optional.of(bookRepository.save(book));
+            bookTypeRepository.updateAvailableCopies();
 
-
-
+            return bookRepository.findByBookId(book.getBookId());
     }
 
     @Override

@@ -9,4 +9,5 @@ import java.util.Optional;
 
 public interface BookTypeService {
     Optional<BookType> edit(Long Id, BookTypeDto bookTypeDto);
+    void updateAvailableCopies();
 }

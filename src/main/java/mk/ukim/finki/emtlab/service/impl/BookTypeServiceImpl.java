@@ -43,5 +43,10 @@ public class BookTypeServiceImpl implements BookTypeService {
 
     }
 
+    @Override
+    public void updateAvailableCopies() {
+        bookTypeRepository.updateAvailableCopies();
+    }
+
 
 }
