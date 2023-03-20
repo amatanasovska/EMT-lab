@@ -1,17 +1,18 @@
 package mk.ukim.finki.emtlab.model.dto;
 
-import mk.ukim.finki.emtlab.model.Author;
-import mk.ukim.finki.emtlab.model.enumerations.Category;
+import lombok.Data;
 
-import javax.persistence.ManyToOne;
-
+@Data
 public class BookDto {
+    String name;
     boolean isTaken;
+
 
     public BookDto() {
     }
 
-    public BookDto(boolean isTaken) {
+    public BookDto(String name, boolean isTaken) {
+        this.name = name;
         this.isTaken = isTaken;
     }
 }

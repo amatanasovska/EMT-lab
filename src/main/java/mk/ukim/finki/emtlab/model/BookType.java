@@ -12,6 +12,7 @@ public class BookType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @Column(unique = true)
     String name;
 
     Category category;
