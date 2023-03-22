@@ -32,18 +32,34 @@ public class BookRestController {
     {
         return this.bookTypeService.findAll();
     }
+    @GetMapping("/copies")
+    public List<Book> findAllCopies()
+    {
+        return this.bookService.findAll();
+    }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Book> findById(@PathVariable Long id) {
-        return this.bookService.findById(id)
+    public ResponseEntity<BookTypeDto> findById(@PathVariable Long id) {
+        return this.bookTypeService.findById(id)
                 .map(book -> ResponseEntity.ok().body(book))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+    @GetMapping("/copies/{booktype_id}")
+    public List<Book> findCopiesByBookType(@PathVariable Long booktype_id)
+    {
+        return bookService.findByBookTypeId(booktype_id);
+    }
 
+    @PostMapping("/copies")
+    public ResponseEntity<Book> insertCopy(@RequestBody BookDto bookDto)
+    {
+        return this.bookService.save(bookDto).map(b -> ResponseEntity.ok().body(b))
+                .orElseGet(()->ResponseEntity.badRequest().build());
+    }
     @PostMapping
     public ResponseEntity<BookType> insertBook(@RequestBody BookTypeDto book)
     {
-        System.out.println(book);
+//        System.out.println(book);
         return this.bookTypeService.save(book)
                 .map(b -> ResponseEntity.ok().body(b))
                 .orElseGet(()->ResponseEntity.badRequest().build());

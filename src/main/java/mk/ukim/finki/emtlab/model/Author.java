@@ -18,6 +18,7 @@ public class Author {
     @ManyToOne
     Country country;
 
+
     public Author() {
     }
 }

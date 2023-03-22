@@ -30,6 +30,7 @@ public class BookTypeServiceImpl implements BookTypeService {
                 String categoryName = bookTypeDto.getCategoryName();
                 Long authorId = bookTypeDto.getAuthorId();
                 BookType bookType = bookTypeRepository.findById(Id).orElseThrow(() -> new BookTypeNotFoundException(Id));
+                Long availableCopies = Long.valueOf(bookTypeDto.getAvailableCopies());
                 if (name != null)
                     bookType.setName(name);
                 if (categoryName != null) {
@@ -41,6 +42,7 @@ public class BookTypeServiceImpl implements BookTypeService {
                     Author author = authorService.findById(authorId).orElseThrow();
                     bookType.setAuthor(author);
                 }
+                bookType.setAvailableCopies(Math.toIntExact(availableCopies));
                 return Optional.of(bookTypeRepository.save(bookType));
 
     }
@@ -81,7 +83,19 @@ public class BookTypeServiceImpl implements BookTypeService {
         return Optional.of(bt);
     }
 
+    @Override
+    public Optional<BookTypeDto> findById(Long id) {
 
+        BookType bookType= bookTypeRepository.findById(id).get();
+
+        BookTypeDto btd = new BookTypeDto(bookType.getId(),
+                                            bookType.getName(),
+                bookType.getCategory().name(),
+                bookType.getAuthor().getId(),
+                bookType.getAvailableCopies());
+
+        return Optional.of(btd);
+    }
 
 
 }

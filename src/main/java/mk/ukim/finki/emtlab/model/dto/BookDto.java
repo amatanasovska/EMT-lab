@@ -4,15 +4,19 @@ import lombok.Data;
 
 @Data
 public class BookDto {
-    String name;
-    boolean isTaken;
-
+//    String name;
+    Boolean isTaken;
+    Long bookType;
 
     public BookDto() {
     }
 
-    public BookDto(String name, boolean isTaken) {
-        this.name = name;
+    public BookDto(boolean isTaken, Long bookType) {
         this.isTaken = isTaken;
+        this.bookType = bookType;
+    }
+
+    public Boolean isTaken() {
+        return isTaken;
     }
 }

@@ -3,10 +3,7 @@ package mk.ukim.finki.emtlab.service.impl;
 import mk.ukim.finki.emtlab.model.Book;
 import mk.ukim.finki.emtlab.model.BookType;
 import mk.ukim.finki.emtlab.model.dto.BookDto;
-import mk.ukim.finki.emtlab.model.exceptions.BookAlreadyTakenException;
-import mk.ukim.finki.emtlab.model.exceptions.BookNotFoundException;
-import mk.ukim.finki.emtlab.model.exceptions.CategoryNotFoundException;
-import mk.ukim.finki.emtlab.model.exceptions.NonNullableFieldException;
+import mk.ukim.finki.emtlab.model.exceptions.*;
 import mk.ukim.finki.emtlab.repository.BookRepository;
 import mk.ukim.finki.emtlab.repository.BookTypeRepository;
 import mk.ukim.finki.emtlab.service.BookService;
@@ -39,11 +36,11 @@ public class BookServiceImpl implements BookService {
     public Optional<Book> save(BookDto bookDto){
 
 
-            String name = bookDto.getName();
-            boolean isTaken = bookDto.isTaken();
-            if(name==null) throw new NonNullableFieldException("name");
+            Long bookTypeId = bookDto.getBookType();
+            Boolean isTaken = bookDto.isTaken();
+//            if(name==null) throw new NonNullableFieldException("name");
 
-            BookType bookType = bookTypeRepository.findByName(name).orElseThrow(()->new CategoryNotFoundException(name));
+            BookType bookType = bookTypeRepository.findById(bookTypeId).orElseThrow(()->new BookTypeNotFoundException(bookTypeId));
             Book book = bookRepository.save(new Book(bookType,isTaken));
 
             bookTypeRepository.updateAvailableCopies();
@@ -60,10 +57,17 @@ public class BookServiceImpl implements BookService {
                 throw new BookAlreadyTakenException(book_type_id, id);
             book.setTaken(true);
             bookRepository.save(book);
+            bookTypeRepository.updateAvailableCopies();
+
             return Optional.of(book);
 
 
 
+    }
+
+    @Override
+    public List<Book> findByBookTypeId(Long id) {
+        return bookRepository.findAllByBookType_Id(id);
     }
 
 
