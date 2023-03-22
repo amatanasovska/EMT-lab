@@ -4,9 +4,10 @@ import mk.ukim.finki.emtlab.model.Author;
 import mk.ukim.finki.emtlab.model.BookType;
 import mk.ukim.finki.emtlab.model.dto.BookTypeDto;
 import mk.ukim.finki.emtlab.model.enumerations.Category;
+import mk.ukim.finki.emtlab.model.exceptions.AuthorNotFoundException;
 import mk.ukim.finki.emtlab.model.exceptions.BookTypeNotFoundException;
-import mk.ukim.finki.emtlab.repository.AuthorRepository;
 import mk.ukim.finki.emtlab.repository.BookTypeRepository;
+import mk.ukim.finki.emtlab.service.AuthorService;
 import mk.ukim.finki.emtlab.service.BookTypeService;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +17,10 @@ import java.util.Optional;
 @Service
 public class BookTypeServiceImpl implements BookTypeService {
     private final BookTypeRepository bookTypeRepository;
-    private final AuthorRepository authorRepository;
-    public BookTypeServiceImpl(BookTypeRepository bookTypeRepository, AuthorRepository authorRepository) {
+    private final AuthorService authorService;
+    public BookTypeServiceImpl(BookTypeRepository bookTypeRepository, AuthorService authorService) {
         this.bookTypeRepository = bookTypeRepository;
-        this.authorRepository = authorRepository;
+        this.authorService = authorService;
     }
 
     @Override
@@ -37,7 +38,7 @@ public class BookTypeServiceImpl implements BookTypeService {
 
                 }
                 if (authorId != null) {
-                    Author author = authorRepository.findById(authorId).orElseThrow();
+                    Author author = authorService.findById(authorId).orElseThrow();
                     bookType.setAuthor(author);
                 }
                 return Optional.of(bookTypeRepository.save(bookType));
@@ -53,6 +54,34 @@ public class BookTypeServiceImpl implements BookTypeService {
     public List<BookType> findAll() {
         return bookTypeRepository.findAll();
     }
+
+    @Override
+    public Optional<BookType> deleteById(Long id) {
+        Optional<BookType> b = bookTypeRepository.findById(id);
+        if(b.isEmpty())
+            throw new BookTypeNotFoundException(id);
+
+        bookTypeRepository.deleteById(id);
+
+        return b;
+    }
+
+    @Override
+    public Optional<BookType> save(BookTypeDto bookTypeDto) {
+        String name = bookTypeDto.getName();
+        Category category = Category.valueOf(bookTypeDto.getCategoryName());
+        Optional<Author> author = authorService.findById(bookTypeDto.getAuthorId());
+        Integer availableCopies = bookTypeDto.getAvailableCopies();
+
+        if(author.isEmpty())
+            throw new AuthorNotFoundException(bookTypeDto.getAuthorId());
+
+        BookType bt = new BookType(name,category,author.get(),availableCopies);
+        bookTypeRepository.save(bt);
+        return Optional.of(bt);
+    }
+
+
 
 
 }

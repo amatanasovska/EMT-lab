@@ -41,9 +41,10 @@ public class BookRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Book> insertBook(@RequestBody BookDto book)
+    public ResponseEntity<BookType> insertBook(@RequestBody BookTypeDto book)
     {
-        return this.bookService.save(book)
+        System.out.println(book);
+        return this.bookTypeService.save(book)
                 .map(b -> ResponseEntity.ok().body(b))
                 .orElseGet(()->ResponseEntity.badRequest().build());
     }
@@ -63,6 +64,22 @@ public class BookRestController {
                 .orElseGet(() -> ResponseEntity.badRequest().build());
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteBook(@PathVariable Long id)
+    {
+        try
+        {
+            this.bookTypeService.deleteById(id);
+            return ResponseEntity.accepted().build();
+        }
+        catch(RuntimeException e)
+        {
+            return ResponseEntity.badRequest().build();
+        }
 
 
-}
+    }
+    }
+
+
+

@@ -17,4 +17,5 @@ public interface BookService {
     Optional<Book> findById(Long id);
     Optional<Book> save(BookDto bookDto);
     Optional<Book> takeBook(Long book_type_id, Long id);
-}
+
+    }

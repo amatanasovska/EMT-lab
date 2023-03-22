@@ -14,11 +14,23 @@ public class BookTypeDto {
 
     Long authorId;
 
+    Integer availableCopies;
 
 
-    public BookTypeDto(String name, String categoryName, Long authorId) {
+    public BookTypeDto(String name, String categoryName, Long authorId, Integer availableCopies) {
         this.name = name;
         this.categoryName = categoryName;
         this.authorId = authorId;
+        this.availableCopies = availableCopies;
+    }
+
+    @Override
+    public String toString() {
+        return "BookTypeDto{" +
+                "name='" + name + '\'' +
+                ", categoryName='" + categoryName + '\'' +
+                ", authorId=" + authorId +
+                ", availableCopies=" + availableCopies +
+                '}';
     }
 }
