@@ -17,7 +17,8 @@ public interface BookTypeRepository extends JpaRepository<BookType, Long> {
     @Modifying(clearAutomatically = true)
     @Query(value = "update BOOK_TYPE set \n" +
             "AVAILABLE_COPIES = \n" +
-            "(select count(*) from BOOK where BOOK_TYPE.ID=BOOK.BOOK_TYPE_ID);", nativeQuery = true)
+            "(select count(*) from BOOK " +
+            "where BOOK_TYPE.ID=BOOK.BOOK_TYPE_ID);", nativeQuery = true)
 
     void updateAvailableCopies();
 

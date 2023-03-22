@@ -10,6 +10,7 @@ import mk.ukim.finki.emtlab.repository.BookTypeRepository;
 import mk.ukim.finki.emtlab.service.BookTypeService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -46,6 +47,11 @@ public class BookTypeServiceImpl implements BookTypeService {
     @Override
     public void updateAvailableCopies() {
         bookTypeRepository.updateAvailableCopies();
+    }
+
+    @Override
+    public List<BookType> findAll() {
+        return bookTypeRepository.findAll();
     }
 
 

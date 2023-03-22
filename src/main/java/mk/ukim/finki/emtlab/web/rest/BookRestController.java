@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-//@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:3001"})
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/book")
 public class BookRestController {
     private final BookService bookService;
@@ -28,9 +28,9 @@ public class BookRestController {
     }
 
     @GetMapping
-    public List<Book> findAll()
+    public List<BookType> findAll()
     {
-        return this.bookService.findAll();
+        return this.bookTypeService.findAll();
     }
 
     @GetMapping("/{id}")
