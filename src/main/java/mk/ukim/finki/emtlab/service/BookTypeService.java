@@ -15,4 +15,5 @@ public interface BookTypeService {
     Optional<BookType> deleteById(Long id);
     Optional<BookType> save(BookTypeDto bookTypeDto);
     Optional<BookTypeDto> findById(Long id);
+    Optional<BookType> find(Long id);
 }

@@ -74,8 +74,14 @@ public class BookRestController {
     }
 
     @PutMapping("/take/{book_type_id}/{id}")
-    public ResponseEntity<Book> takeBook(@PathVariable Long book_type_id,@PathVariable Long id) throws BookAlreadyTakenException, BookNotFoundException {
+    public ResponseEntity<Book> takeBook(@PathVariable Long book_type_id,@PathVariable Long id) {
         return this.bookService.takeBook(book_type_id, id)
+                .map(bookType -> ResponseEntity.ok().body(bookType))
+                .orElseGet(() -> ResponseEntity.badRequest().build());
+    }
+    @PutMapping("/return/{book_type_id}/{id}")
+    public ResponseEntity<Book> returnBook(@PathVariable Long book_type_id,@PathVariable Long id){
+        return this.bookService.returnBook(book_type_id, id)
                 .map(bookType -> ResponseEntity.ok().body(bookType))
                 .orElseGet(() -> ResponseEntity.badRequest().build());
     }
@@ -86,6 +92,22 @@ public class BookRestController {
         try
         {
             this.bookTypeService.deleteById(id);
+            return ResponseEntity.accepted().build();
+        }
+        catch(RuntimeException e)
+        {
+            return ResponseEntity.badRequest().build();
+        }
+
+
+    }
+
+    @DeleteMapping("/copy/{booktype_id}/{id}")
+    public ResponseEntity deleteBookCopy(@PathVariable Long id, @PathVariable Long booktype_id)
+    {
+        try
+        {
+            this.bookService.deleteByBookIdAndBookType(id, booktype_id);
             return ResponseEntity.accepted().build();
         }
         catch(RuntimeException e)

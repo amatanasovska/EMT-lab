@@ -24,5 +24,6 @@ public interface BookTypeRepository extends JpaRepository<BookType, Long> {
     void updateAvailableCopies();
 
     void deleteById(Long Id);
+    Optional<BookType> findById(Long Id);
 
 }

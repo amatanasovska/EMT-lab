@@ -36,13 +36,13 @@ public class DataLoader {
             Author author = new Author("Name author " + i, "Surname " + i, country);
             authorRepository.save(author);
         }
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 2; i++) {
             List<Author> authors = authorRepository.findAll();
             for (Author author : authors) {
                 String name = author.getName();
                 BookType newBook = new BookType("Book " + i + " " + name,
                         Category.values()[i % Category.values().length],
-                        author, 10);
+                        author, 0);
                 bookTypeRepository.save(newBook);
             }
         }

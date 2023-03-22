@@ -97,5 +97,10 @@ public class BookTypeServiceImpl implements BookTypeService {
         return Optional.of(btd);
     }
 
+    @Override
+    public Optional<BookType> find(Long id) {
+        return bookTypeRepository.findById(id);
+    }
+
 
 }
